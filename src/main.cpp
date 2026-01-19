@@ -2,10 +2,18 @@
 #include <bn_color.h>
 #include <bn_core.h>
 #include <bn_keypad.h>
+#include <bn_sprite_ptr.h>
+#include <bn_sprite_items_dot.h>
 
 int main()
 {
     bn::core::init();
+
+    bn::sprite_ptr myCircle = bn::sprite_items::dot.create_sprite(40, -40);
+    bn::sprite_ptr myCircle1 = bn::sprite_items::dot.create_sprite(-40, -40);
+    bn::sprite_ptr myCircle2 = bn::sprite_items::dot.create_sprite(40, 40);
+    bn::sprite_ptr myCircle3 = bn::sprite_items::dot.create_sprite(-40, 40);
+
     // original
     float r = 20;
     float g = 20;
@@ -13,12 +21,12 @@ int main()
 
     // a button
     float x = 0;
-    float y = 0;
-    float z = 31;
+    float y = 31;
+    float z = 0;
 
     // b button
-    float i = 0;
-    float j = 31;
+    float i = 31;
+    float j = 0;
     float k = 0;
 
     bn::backdrop::set_color(bn::color(r, g, b));
@@ -32,7 +40,10 @@ int main()
             float rT = x + i;
             float gT = y + j;
             float bT = z + k;
-            bn::backdrop::set_color(bn::color(std::min((int)rT, 31), std::min((int)gT, 31), std::min((int)bT, 31)));
+            bn::backdrop::set_color(bn::color(
+                std::min((int)rT, 31),
+                std::min((int)gT, 31),
+                std::min((int)bT, 31)));
         }
         // sets to defined a color
         else if (bn::keypad::a_pressed() || bn::keypad::a_held())
