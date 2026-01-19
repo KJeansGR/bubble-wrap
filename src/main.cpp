@@ -4,15 +4,25 @@
 #include <bn_keypad.h>
 #include <bn_sprite_ptr.h>
 #include <bn_sprite_items_dot.h>
+#include <bn_log.h>
+#include <bn_vector.h>
 
 int main()
 {
     bn::core::init();
 
-    bn::sprite_ptr myCircle = bn::sprite_items::dot.create_sprite(40, -40);
-    bn::sprite_ptr myCircle1 = bn::sprite_items::dot.create_sprite(-40, -40);
-    bn::sprite_ptr myCircle2 = bn::sprite_items::dot.create_sprite(40, 40);
-    bn::sprite_ptr myCircle3 = bn::sprite_items::dot.create_sprite(-40, 40);
+    // bn::sprite_ptr myCircle = bn::sprite_items::dot.create_sprite(40, -40);
+    // bn::sprite_ptr myCircle1 = bn::sprite_items::dot.create_sprite(-40, -40);
+    // bn::sprite_ptr myCircle2 = bn::sprite_items::dot.create_sprite(40, 40);
+    // bn::sprite_ptr myCircle3 = bn::sprite_items::dot.create_sprite(-40, 40);
+
+    bn::vector<bn::sprite_ptr, 10> circles = {};
+
+    for (int x = -40; x <= 40; x += 10)
+    {
+        circles.push_back(bn::sprite_items::dot.create_sprite(x, 40));
+        BN_LOG("x value", x);
+    }
 
     // original
     float r = 20;
@@ -59,6 +69,21 @@ int main()
         else if (!bn::keypad::a_pressed() && !bn::keypad::b_pressed())
         {
             bn::backdrop::set_color(bn::color(r, g, b));
+        }
+
+        if (bn::keypad::any_pressed() || bn::keypad::any_held())
+        {
+            for (int o = 0; o < circles.size(); o++)
+            {
+                auto xPos = circles[o].position().x();
+                auto yPos = circles[o].position().y();
+
+                auto nyPos = circles[o].position().y(); // made this auto because i dont know how to declare a position/vector variable
+
+                yPos + 10 > 70 ? nyPos = -70 : nyPos = yPos + 10; // this should make it stay in the screen bounds
+
+                circles[o].set_position(xPos, nyPos);
+            }
         }
         bn::core::update();
     }
