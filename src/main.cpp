@@ -4,6 +4,7 @@
 #include <bn_keypad.h>
 #include <bn_sprite_ptr.h>
 #include <bn_sprite_items_dot.h>
+#include <bn_sprite_items_heart.h>
 #include <bn_log.h>
 #include <bn_vector.h>
 
@@ -16,11 +17,31 @@ int main()
     // bn::sprite_ptr myCircle2 = bn::sprite_items::dot.create_sprite(40, 40);
     // bn::sprite_ptr myCircle3 = bn::sprite_items::dot.create_sprite(-40, 40);
 
-    bn::vector<bn::sprite_ptr, 10> circles = {};
+    bn::vector<bn::sprite_ptr, 30> circles = {};
 
-    for (int x = -40; x <= 40; x += 10)
+    for (int x = -40; x <= 40; x += 20)
     {
-        circles.push_back(bn::sprite_items::dot.create_sprite(x, 40));
+        circles.push_back(bn::sprite_items::heart.create_sprite(x, -40));
+        BN_LOG("x value", x);
+    }
+    for (int x = -40; x <= 40; x += 20)
+    {
+        circles.push_back(bn::sprite_items::heart.create_sprite(x, -20));
+        BN_LOG("x value", x);
+    }
+    for (int x = -40; x <= 40; x += 20)
+    {
+        circles.push_back(bn::sprite_items::heart.create_sprite(x, 0));
+        BN_LOG("x value", x);
+    }
+    for (int x = -40; x <= 40; x += 20)
+    {
+        circles.push_back(bn::sprite_items::heart.create_sprite(x, 20));
+        BN_LOG("x value", x);
+    }
+    for (int x = -40; x <= 40; x += 20)
+    {
+        circles.push_back(bn::sprite_items::heart.create_sprite(x, 40));
         BN_LOG("x value", x);
     }
 
@@ -84,7 +105,13 @@ int main()
 
                 circles[o].set_position(xPos, nyPos);
             }
+            for (int o = 0; o < circles.size(); o++)
+            {
+
+                circles[o].set_rotation_angle(circles[0].rotation_angle() + 10 * o);
+            }
         }
+
         bn::core::update();
     }
 }
